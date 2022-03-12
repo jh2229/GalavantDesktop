@@ -3,8 +3,16 @@
     // Selected files
     let files = 0;
     let src;
+	let src2;
     $: poster = src + "#t=10";
+	$: poster2 = src2 + "#t=10";
+
     $: file_name = files ? files[0].name.split('.')[0] : 0;
+
+	//const timingObject = new TimingObject();
+
+	//querySelector(<webcomponent1>).timingSrc = timingObject;
+	//querySelector(<webcomponent2>).timingSrc = timingObject;
 
 	// These values are bound to properties of the video
 	let time = 0;
@@ -58,11 +66,16 @@
     function loadFile(e) {
 		src = URL.createObjectURL(e.target.files[0]);
 	}
+
+	// function loadFile2(e) {
+	// 	src2 = URL.createObjectURL(e.target.files[0]);
+	// }
 </script>
 
 <h1>Multi-modal video analysis toolkit</h1>
 
 <input on:change={loadFile} type = "file" accept="video/*" bind:files>
+<!-- <input on:change={loadFile2} type = "file" accept="video/*" bind:files> -->
 
 {#if files && files[0]}
 	<p>
@@ -70,7 +83,9 @@
 	</p>
 {/if}
 
-<div>
+
+<div class = "container">
+	
 	<video
         preload='auto'
 		{src}
@@ -84,6 +99,22 @@
 		<track kind="captions">
 	</video>
 
+
+	<!-- <video
+		preload='auto'
+		{src2}
+		
+		>
+		<track kind="captions">
+	</video> -->
+	<div class="nested"> 
+		<div>Sub Item 1</div>
+		<div>Sub Item 2</div>
+		<div>Sub Item 3</div>
+	</div>
+	
+
+
 	<div class="controls" style="opacity: {duration && showControls ? 1 : 0}">
 		<progress value="{(time / duration) || 0}"/>
 		<div class="info">
@@ -94,11 +125,14 @@
 		</div>
 
 	</div>
+
+
 </div>
 
 <style>
 	div {
 		position: relative;
+		
 	}
 
 	.controls {
@@ -145,6 +179,28 @@
 	}
 
 	video {
-		width: 100%;
+		width: 100%; 
+	}
+
+	.container {
+		display: grid;
+		grid-template-columns:repeat(2, 3fr 1fr);
+		grid-gap: 1em;
+	}
+
+	.container > video{
+		background:#eee;
+		/* padding:1em; */
+		border: rgb(223, 62, 62) 1px solid;
+	}
+	.nested {
+		display:grid;
+		/* grid-template-columns:repeat(1, 1fr); */
+	}
+	
+	.nested > div{
+		/* background:#daa; */
+		/* padding:1em; */
+		border: rgb(223, 62, 62) 1px solid;
 	}
 </style>
